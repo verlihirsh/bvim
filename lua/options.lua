@@ -20,7 +20,6 @@ vim.opt.showmatch = true
 vim.opt.termguicolors = true
 vim.opt.fillchars = { eob = " " }  -- Убираем тильды
 
-
 -- Настройки отступов
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
@@ -70,4 +69,3 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 
 -- Отключаем предупреждение о deprecated функциях
 vim.g.VM_set_silent_exit = 1
-

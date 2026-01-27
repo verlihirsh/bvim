@@ -178,27 +178,27 @@ return {
     },
     opts = {
       notifiers = {
-        {name = "System"}
+        { name = "System" }
       },
       sessions = {
-          default1h = {
-            { name = "Work", duration = "20m" },
-            { name = "Short Break", duration = "5m" },
-            { name = "Work", duration = "20m" },
-          },
-          default2h = {
-            { name = "Work", duration = "20m" },
-            { name = "Short Break", duration = "5m" },
-            { name = "Work", duration = "20m" },
-            { name = "Long Break", duration = "15m" },
-            { name = "Work", duration = "20m" },
-            { name = "Short Break", duration = "5m" },
-            { name = "Work", duration = "20m" },
-          },
-          rest = {
-            { name = "Long Break", duration = "30m" },
-          }
+        default1h = {
+          { name = "Work",        duration = "20m" },
+          { name = "Short Break", duration = "5m" },
+          { name = "Work",        duration = "20m" },
         },
+        default2h = {
+          { name = "Work",        duration = "20m" },
+          { name = "Short Break", duration = "5m" },
+          { name = "Work",        duration = "20m" },
+          { name = "Long Break",  duration = "15m" },
+          { name = "Work",        duration = "20m" },
+          { name = "Short Break", duration = "5m" },
+          { name = "Work",        duration = "20m" },
+        },
+        rest = {
+          { name = "Long Break", duration = "30m" },
+        }
+      },
     },
   },
 
@@ -284,7 +284,7 @@ return {
           lualine_a = { "mode" },
           lualine_b = { "branch", "diff" },
           lualine_c = {
-              "filename"
+            "filename"
           },
           lualine_x = { require("opencode").statusline, "encoding", "fileformat", "filetype" },
           lualine_y = { "location" },
@@ -339,7 +339,7 @@ return {
           },
           groups = {
             items = {
-                require('bufferline.groups').builtin.pinned:with({ icon = "󰐃 " })
+              require('bufferline.groups').builtin.pinned:with({ icon = "󰐃 " })
             }
           },
         },
@@ -361,7 +361,7 @@ return {
       require('Comment').setup({
         toggler = { line = '<leader>/' },
         opleader = {
-            line = '<leader>/',
+          line = '<leader>/',
         },
       })
     end,
@@ -386,13 +386,13 @@ return {
     config = function()
       require("ibl").setup({
         scope = {
-           enabled = true,
-           show_start = false,
-           show_end = false,
-           injected_languages = true,
-           highlight = { "Function", "Label" },
-           priority = 500,
-         }
+          enabled = true,
+          show_start = false,
+          show_end = false,
+          injected_languages = true,
+          highlight = { "Function", "Label" },
+          priority = 500,
+        }
       })
     end,
   },
@@ -436,7 +436,7 @@ return {
     "folke/todo-comments.nvim",
     event = "VeryLazy",
   },
-  
+
   {
     "folke/persistence.nvim",
     event = "BufReadPre",
@@ -467,8 +467,6 @@ return {
       })
     end,
   },
-
-
   {
     "folke/snacks.nvim",
     ---@type snacks.Config
@@ -477,6 +475,25 @@ return {
       terminal = { enabled = true },
       picker = { enabled = true },
     }
+  },
+  {
+    "github/copilot.vim",
+    cmd = "Copilot",
+    event = "BufWinEnter",
+    init = function()
+      vim.g.copilot_no_maps = true
+    end,
+    config = function()
+      -- Block the normal Copilot suggestions
+      vim.api.nvim_create_augroup("github_copilot", { clear = true })
+      vim.api.nvim_create_autocmd({ "FileType", "BufUnload" }, {
+        group = "github_copilot",
+        callback = function(args)
+          vim.fn["copilot#On" .. args.event]()
+        end,
+      })
+      vim.fn["copilot#OnFileType"]()
+    end,
   },
   {
     "NickvanDyke/opencode.nvim",
@@ -530,5 +547,47 @@ return {
       vim.o.autoread = true
       -- require("opencode").setup(vim.g.opencode_opts)
     end,
+  },
+  {
+    'xvzc/chezmoi.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require("chezmoi").setup {
+        edit = {
+          watch = false,
+          force = false,
+          -- ignore_patterns = {
+          --   "run_onchange_.*",
+          --   "run_once_.*",
+          --   "%.chezmoiignore",
+          --   "%.chezmoitemplate",
+          --   -- Add custom patterns here
+          -- },
+        },
+        events = {
+          on_open = {
+            notification = {
+              enable = true,
+              msg = "Opened a chezmoi-managed file",
+              opts = {},
+            },
+          },
+          on_watch = {
+            notification = {
+              enable = true,
+              msg = "This file will be automatically applied",
+              opts = {},
+            },
+          },
+          on_apply = {
+            notification = {
+              enable = true,
+              msg = "Successfully applied",
+              opts = {},
+            },
+          },
+        },
+      }
+    end
   },
 }

@@ -3,98 +3,300 @@ local wk = require("which-key")
 wk.setup({})
 
 wk.add({
-  { "<leader>f", group = "File" },
-  { "<leader>ff", function() Snacks.picker.files() end, desc = "Find File" },
-  { "<leader>fg", function() Snacks.picker.grep() end, desc = "Grep Text" },
-  { "<leader>fn", "<cmd>ene<CR>", desc = "New File" },
+  { "<leader>f",   group = "File" },
+  { "<leader>ff",  function() Snacks.picker.files() end,        desc = "Find File" },
+  { "<leader>fg",  function() Snacks.picker.grep() end,         desc = "Grep Text" },
+  { "<leader>fn",  "<cmd>ene<CR>",                              desc = "New File" },
 
-  { "<leader>b", group = "Buffers" },
-  { "<leader>bd", "<cmd>bdelete<CR>", desc = "Delete buffer" },
-  { "<leader>bp", "<cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
-  { "<leader>bf", function() Snacks.picker.buffers() end, desc = "Find buffer" },
-  { "<leader>bb", "<cmd>BufferLinePick<CR>", desc = "Pick buffer" },
-  { "<leader>bD", "<cmd>silent! %bdelete<CR>", desc = "Delete all" },
-  { "<leader>bc", group = "Close" },
-  { "<leader>bco", "<cmd>BufferLineCloseOthers<CR>", desc = "Close others" },
-  { "<leader>bcr", "<cmd>BufferLineCloseRight<CR>", desc = "Close right" },
-  { "<leader>bcl", "<cmd>BufferLineCloseLeft<CR>", desc = "Close left" },
+  { "<leader>b",   group = "Buffers" },
+  { "<leader>bd",  "<cmd>bdelete<CR>",                          desc = "Delete buffer" },
+  { "<leader>bp",  "<cmd>BufferLineTogglePin<CR>",              desc = "Toggle pin" },
+  { "<leader>bf",  function() Snacks.picker.buffers() end,      desc = "Find buffer" },
+  { "<leader>bb",  "<cmd>BufferLinePick<CR>",                   desc = "Pick buffer" },
+  { "<leader>bD",  "<cmd>silent! %bdelete<CR>",                 desc = "Delete all" },
+  { "<leader>bc",  group = "Close" },
+  { "<leader>bco", "<cmd>BufferLineCloseOthers<CR>",            desc = "Close others" },
+  { "<leader>bcr", "<cmd>BufferLineCloseRight<CR>",             desc = "Close right" },
+  { "<leader>bcl", "<cmd>BufferLineCloseLeft<CR>",              desc = "Close left" },
 
-  { "<leader>g", group = "Git" },
-  { "<leader>gg", "<cmd>Git status<CR>", desc = "Status" },
-  { "<leader>gf", function() Snacks.picker.git_log_file() end, desc = "File history" },
-  { "<leader>gb", group = "Branch" },
+  { "<leader>g",   group = "Git" },
+  { "<leader>gg",  "<cmd>Git status<CR>",                       desc = "Status" },
+  { "<leader>gf",  function() Snacks.picker.git_log_file() end, desc = "File history" },
+  { "<leader>gb",  group = "Branch" },
   { "<leader>gbb", function() Snacks.picker.git_branches() end, desc = "List branches" },
-  { "<leader>gbn", function()
-    vim.ui.input({ prompt = 'Branch name: ' }, function(name)
-      if name then vim.cmd('Git branch ' .. name) end
-    end)
-  end, desc = "New branch" },
-  { "<leader>gl", group = "Blame" },
-  { "<leader>gll", "<cmd>Gitsigns blame_line<CR>", desc = "Blame line" },
+  {
+    "<leader>gbn",
+    function()
+      vim.ui.input({ prompt = 'Branch name: ' }, function(name)
+        if name then vim.cmd('Git branch ' .. name) end
+      end)
+    end,
+    desc = "New branch"
+  },
+  { "<leader>gl",  group = "Blame" },
+  { "<leader>gll", "<cmd>Gitsigns blame_line<CR>",             desc = "Blame line" },
   { "<leader>glf", function() require('gitsigns').blame() end, desc = "Blame file" },
-  { "<leader>gc", group = "Commit" },
-  { "<leader>gch", function() Snacks.picker.git_log() end, desc = "History" },
-  { "<leader>gcam", function()
-    vim.cmd('Git add .')
-    vim.ui.input({ prompt = 'Commit message: ' }, function(msg)
-      if msg then vim.cmd(string.format('Git commit -m "%s"', msg)) end
-    end)
-  end, desc = "Add all & commit" },
-  { "<leader>gcama", function()
-    vim.cmd('Git add .')
-    require("opencode").ask("@diff: make a commin on this changes", { submit = true })
-  end, desc = "Add all & commit using llm" },
-  { "<leader>gs", group = "Stash" },
-  { "<leader>gss", "<cmd>Git stash<CR>", desc = "Stash" },
+  { "<leader>gc",  group = "Commit" },
+  { "<leader>gch", function() Snacks.picker.git_log() end,     desc = "History" },
+  {
+    "<leader>gcam",
+    function()
+      vim.cmd('Git add .')
+      vim.ui.input({ prompt = 'Commit message: ' }, function(msg)
+        if msg then vim.cmd(string.format('Git commit -m "%s"', msg)) end
+      end)
+    end,
+    desc = "Add all & commit"
+  },
+  {
+    "<leader>gcama",
+    function()
+      vim.cmd('Git add .')
+      require("opencode").ask("@diff: make a commin on this changes", { submit = true })
+    end,
+    desc = "Add all & commit using llm"
+  },
+  { "<leader>gs",  group = "Stash" },
+  { "<leader>gss", "<cmd>Git stash<CR>",     desc = "Stash" },
   { "<leader>gsp", "<cmd>Git stash pop<CR>", desc = "Pop" },
-  { "<leader>gp", group = "Push" },
-  { "<leader>gpp", "<cmd>Git push<CR>", desc = "Push" },
-  { "<leader>gpsup", function()
-    local branch = vim.fn.system("git branch --show-current"):gsub("\n", "")
-    vim.cmd('Git push --set-upstream origin ' .. branch)
-  end, desc = "Push & set upstream" },
-  { "<leader>gd", group = "Diff" },
+  { "<leader>gp",  group = "Push" },
+  { "<leader>gpp", "<cmd>Git push<CR>",      desc = "Push" },
+  {
+    "<leader>gpsup",
+    function()
+      local branch = vim.fn.system("git branch --show-current"):gsub("\n", "")
+      vim.cmd('Git push --set-upstream origin ' .. branch)
+    end,
+    desc = "Push & set upstream"
+  },
+  { "<leader>gd",  group = "Diff" },
   { "<leader>gds", function() Snacks.picker.git_status() end, desc = "Changed files" },
-  { "<leader>gdv", "<cmd>DiffviewOpen<CR>", desc = "Diffview" },
-  { "<leader>gdh", "<cmd>DiffviewFileHistory %<CR>", desc = "File history" },
-  { "<leader>gdH", "<cmd>DiffviewFileHistory<CR>", desc = "Branch history" },
-  { "<leader>gdq", "<cmd>DiffviewClose<CR>", desc = "Close diffview" },
+  { "<leader>gdv", "<cmd>DiffviewOpen<CR>",                   desc = "Diffview" },
+  { "<leader>gdh", "<cmd>DiffviewFileHistory %<CR>",          desc = "File history" },
+  { "<leader>gdH", "<cmd>DiffviewFileHistory<CR>",            desc = "Branch history" },
+  { "<leader>gdq", "<cmd>DiffviewClose<CR>",                  desc = "Close diffview" },
 
-  { "<leader>c", group = "Code" },
-  { "<leader>ca", desc = "Code action" },
-  { "<leader>cr", desc = "Rename symbol" },
-  { "<leader>cf", desc = "Format" },
-  { "<leader>cl", desc = "Run codelens" },
-  { "<leader>cL", desc = "Refresh codelens" },
-  { "<leader>ch", desc = "Toggle inlay hints" },
-  { "<leader>co", desc = "Organize imports" },
-  { "<leader>cd", function()
-    local row = vim.api.nvim_win_get_cursor(0)[1]
-    vim.api.nvim_buf_set_lines(0, row - 1, row - 1, false, { "binding.irb" })
-  end, desc = "Insert binding.irb" },
-  { "<leader>cs", group = "Symbols" },
+  { "<leader>c",   group = "Code" },
+  { "<leader>ca",  desc = "Code action" },
+  { "<leader>cr",  desc = "Rename symbol" },
+  { "<leader>cf",  desc = "Format" },
+  { "<leader>cl",  desc = "Run codelens" },
+  { "<leader>cL",  desc = "Refresh codelens" },
+  { "<leader>ch",  desc = "Toggle inlay hints" },
+  { "<leader>co",  desc = "Organize imports" },
+  {
+    "<leader>cd",
+    function()
+      local row = vim.api.nvim_win_get_cursor(0)[1]
+      vim.api.nvim_buf_set_lines(0, row - 1, row - 1, false, { "binding.irb" })
+    end,
+    desc = "Insert binding.irb"
+  },
+  { "<leader>cs",  group = "Symbols" },
   { "<leader>csd", desc = "Document symbols" },
   { "<leader>csw", desc = "Workspace symbols" },
 
-  { "<leader>l", group = "Diagnostics" },
-  { "<leader>ld", desc = "Line diagnostic" },
-  { "<leader>lb", desc = "Buffer diagnostics" },
-  { "<leader>lw", desc = "Workspace diagnostics" },
+  { "<leader>l",   group = "Diagnostics" },
+  { "<leader>ld",  desc = "Line diagnostic" },
+  { "<leader>lb",  desc = "Buffer diagnostics" },
+  { "<leader>lw",  desc = "Workspace diagnostics" },
 
-  { "<leader>a", group = "AI" },
-  { "<leader>aa", function()
-    require("opencode.provider").start()
-    vim.defer_fn(function()
-      require("opencode").ask("@this: ", { submit = true })
-    end, 500)
-  end, desc = "Ask about this", mode = { "n", "v" } },
-  { "<leader>ae", function() require("opencode").select() end, desc = "Select action" },
-  { "<leader>at", function() require("opencode").toggle() end, desc = "Toggle panel" },
-  { "<leader>ao", group = "Navigation" },
-  { "<leader>aou", function() require("opencode").command("session.half.page.up") end, desc = "Half page up" },
+  { "<leader>a",   group = "AI" },
+  {
+    "<leader>aa",
+    function()
+      require("opencode.provider").start()
+      vim.defer_fn(function()
+        require("opencode").ask("@this: ", { submit = true })
+      end, 500)
+    end,
+    desc = "Ask about this",
+    mode = { "n", "v" }
+  },
+  { "<leader>ae",  function() require("opencode").select() end,                          desc = "Select action" },
+  { "<leader>at",  function() require("opencode").toggle() end,                          desc = "Toggle panel" },
+  { "<leader>ao",  group = "Navigation" },
+  { "<leader>aou", function() require("opencode").command("session.half.page.up") end,   desc = "Half page up" },
   { "<leader>aod", function() require("opencode").command("session.half.page.down") end, desc = "Half page down" },
+  {
+    "<leader>acs",
+    function()
+      if not vim.g._copilot_panel_picker_fn_defined then
+        vim.g._copilot_panel_picker_fn_defined = true
+        vim.api.nvim_exec2(
+          [[
+function! CopilotPanelItems(position, bufnr) abort
+  try
+    let params = { 'textDocument': { 'uri': a:bufnr }, 'position': a:position }
+    let res = copilot#Request('textDocument/copilotPanelCompletion', params).Await()
+    if type(res) == v:t_dict
+      return get(res, 'items', [])
+    endif
+    return res
+  catch
+    return []
+  endtry
+endfunction
+        ]],
+          {}
+        )
+      end
 
-  { "<leader>e", group = "Explorer" },
+      local bufnr = vim.api.nvim_get_current_buf()
+      local was_insert = vim.fn.mode():match("^[iR]") ~= nil
+      local position
+      if was_insert then
+        vim.cmd.stopinsert()
+        position = vim.fn["copilot#util#AppendPosition"]()
+      else
+        position = {
+          line = vim.fn.line(".") - 1,
+          character = vim.fn["copilot#util#UTF16Width"](vim.fn.getline(".")),
+        }
+      end
+
+      local original_line = vim.api.nvim_buf_get_lines(bufnr, position.line, position.line + 1, false)[1] or ""
+
+      ---@type table[]
+      local items = vim.fn.CopilotPanelItems(position, bufnr)
+      if type(items) ~= "table" or vim.tbl_isempty(items) then
+        vim.notify("Copilot: no suggestions", vim.log.levels.INFO, { title = "Copilot" })
+        return
+      end
+
+      local function split_lines(s)
+        return vim.split(s:gsub("\r\n", "\n"), "\n", { plain = true })
+      end
+
+      local function byte_idx(line, utf16_char)
+        local idx = vim.fn["copilot#util#UTF16ToByteIdx"](line, utf16_char)
+        if type(idx) ~= "number" or idx < 0 then
+          return #line
+        end
+        return idx
+      end
+
+      local picker_items = {} ---@type snacks.picker.Item[]
+      for i, item in ipairs(items) do
+        if type(item) == "table" and type(item.insertText) == "string" and type(item.range) == "table" then
+          local lines = split_lines(item.insertText)
+
+          local start_line = item.range.start.line
+          local start_char = item.range.start.character
+          local end_line = item.range["end"].line
+          local end_char = item.range["end"].character
+
+          local old_first = vim.api.nvim_buf_get_lines(bufnr, start_line, start_line + 1, false)[1] or ""
+          local old_last = vim.api.nvim_buf_get_lines(bufnr, end_line, end_line + 1, false)[1] or ""
+          local start_byte = byte_idx(old_first, start_char)
+          local end_byte = byte_idx(old_last, end_char)
+
+          lines[1] = old_first:sub(1, start_byte) .. lines[1]
+          lines[#lines] = lines[#lines] .. old_last:sub(end_byte + 1)
+
+          local title = (lines[1]:gsub("^%s+", ""):gsub("%s+$", ""))
+          if #title > 90 then
+            title = title:sub(1, 90) .. "…"
+          end
+
+          picker_items[#picker_items + 1] = {
+            idx = i,
+            text = title == "" and ("Suggestion " .. i) or title,
+            preview = {
+              text = table.concat(lines, "\n"),
+              ft = vim.bo[bufnr].filetype,
+              loc = false,
+            },
+            _copilot = {
+              item = item,
+              bufnr = bufnr,
+              line = original_line,
+              was_insert = was_insert,
+            },
+          }
+        end
+      end
+
+      if vim.tbl_isempty(picker_items) then
+        vim.notify("Copilot: no suggestions", vim.log.levels.INFO, { title = "Copilot" })
+        return
+      end
+
+      Snacks.picker({
+        title = "Copilot",
+        prompt = " ",
+        items = picker_items,
+        format = "text",
+        preview = "preview",
+        layout = { preset = "vscode" },
+        win = {
+          input = {
+            keys = {
+              ["<Esc>"] = { "close", mode = { "n", "i" } },
+            },
+          },
+        },
+        confirm = function(picker, selection)
+          picker:close()
+          if not selection or type(selection._copilot) ~= "table" then
+            return
+          end
+
+          local meta = selection._copilot
+          local buf = meta.bufnr
+          local copilot_item = meta.item
+          if not vim.api.nvim_buf_is_valid(buf) then
+            vim.notify("Copilot: buffer is gone", vim.log.levels.ERROR, { title = "Copilot" })
+            return
+          end
+
+          local lnum = copilot_item.range.start.line
+          local current_line = vim.api.nvim_buf_get_lines(buf, lnum, lnum + 1, false)[1] or ""
+          if current_line ~= meta.line then
+            vim.notify("Copilot: buffer changed since synthesizing completion", vim.log.levels.WARN,
+              { title = "Copilot" })
+            return
+          end
+
+          local function apply()
+            local insert_lines = split_lines(copilot_item.insertText)
+
+            local s_line = copilot_item.range.start.line
+            local s_char = copilot_item.range.start.character
+            local e_line = copilot_item.range["end"].line
+            local e_char = copilot_item.range["end"].character
+
+            local first = vim.api.nvim_buf_get_lines(buf, s_line, s_line + 1, false)[1] or ""
+            local last = vim.api.nvim_buf_get_lines(buf, e_line, e_line + 1, false)[1] or ""
+            local s_byte = byte_idx(first, s_char)
+            local e_byte = byte_idx(last, e_char)
+
+            insert_lines[1] = first:sub(1, s_byte) .. insert_lines[1]
+            insert_lines[#insert_lines] = insert_lines[#insert_lines] .. last:sub(e_byte + 1)
+
+            vim.api.nvim_buf_set_lines(buf, s_line, e_line + 1, false, insert_lines)
+
+            vim.api.nvim_set_current_buf(buf)
+            vim.api.nvim_win_set_cursor(0, { s_line + #insert_lines, 0 })
+            if meta.was_insert then
+              vim.cmd.startinsert({ bang = true })
+            else
+              vim.cmd.normal({ args = { "$" }, bang = true })
+            end
+          end
+
+          vim.schedule(apply)
+
+          if type(copilot_item.command) == "table" then
+            pcall(vim.fn["copilot#Request"], "workspace/executeCommand", copilot_item.command)
+          end
+        end,
+      })
+    end,
+    desc = "Copilot suggestions"
+  },
+
+  { "<leader>e",   group = "Explorer" },
   {
     "<leader>ee",
     function()
@@ -109,86 +311,90 @@ wk.add({
     end,
     desc = "Toggle Explorer",
   },
-  { "<leader>ee", "<cmd>Neotree toggle last left<CR>", desc = "Toggle Explorer" },
-  { "<leader>ef", "<cmd>Neotree focus filesystem left reveal<CR>", desc = "Focus Files" },
-  { "<leader>eb", "<cmd>Neotree focus buffers left<CR>", desc = "Focus Buffers" },
-  { "<leader>eg", "<cmd>Neotree focus git_status left<CR>", desc = "Focus Git" },
-  { "<leader>es", "<cmd>Neotree focus document_symbols left<CR>", desc = "Focus Symbols" },
-  { "<leader>em", "<cmd>Neotree focus marks <CR>", desc = "Focus marks" },
-  { "<leader>el", function() require("edgy").toggle("left") end, desc = "toggle left" },
-  { "<leader>er", function() require("edgy").toggle("right") end, desc = "toggle right" },
-  { "<leader>en", "<C-w>w", desc = "Cycle windows" },
-  { "<leader>et", function() Snacks.terminal() end, desc = "Toggle Terminal" },
+  { "<leader>ee",  "<cmd>Neotree toggle last left<CR>",             desc = "Toggle Explorer" },
+  { "<leader>ef",  "<cmd>Neotree focus filesystem left reveal<CR>", desc = "Focus Files" },
+  { "<leader>eb",  "<cmd>Neotree focus buffers left<CR>",           desc = "Focus Buffers" },
+  { "<leader>eg",  "<cmd>Neotree focus git_status left<CR>",        desc = "Focus Git" },
+  { "<leader>es",  "<cmd>Neotree focus document_symbols left<CR>",  desc = "Focus Symbols" },
+  { "<leader>em",  "<cmd>Neotree focus marks <CR>",                 desc = "Focus marks" },
+  { "<leader>el",  function() require("edgy").toggle("left") end,   desc = "toggle left" },
+  { "<leader>er",  function() require("edgy").toggle("right") end,  desc = "toggle right" },
+  { "<leader>en",  "<C-w>w",                                        desc = "Cycle windows" },
+  { "<leader>et",  function() Snacks.terminal() end,                desc = "Toggle Terminal" },
 
-  { "<leader>q", group = "Session" },
-  { "<leader>qq", "<cmd>qa!<CR>", desc = "Quit without saving" },
-  { "<leader>qwq", "<cmd>wa<CR><cmd>qa<CR>", desc = "Save all and quit" },
+  { "<leader>q",   group = "Session" },
+  { "<leader>qq",  "<cmd>qa!<CR>",                                  desc = "Quit without saving" },
+  { "<leader>qwq", "<cmd>wa<CR><cmd>qa<CR>",                        desc = "Save all and quit" },
 
-  { "<leader>t", group = "Timer" },
-  { "<leader>ts", group = "Session" },
-  { "<leader>ts2", "<cmd>TimerSession default2h<CR>", desc = "2h focus" },
-  { "<leader>ts1", "<cmd>TimerSession default1h<CR>", desc = "1h focus" },
-  { "<leader>tsr", "<cmd>TimerSession rest<CR>", desc = "Rest" },
-  { "<leader>tt", group = "Timer" },
-  { "<leader>tts", "<cmd>TimerStop<CR>", desc = "Stop" },
-  { "<leader>ttp", "<cmd>TimerPause<CR>", desc = "Pause" },
-  { "<leader>ttr", "<cmd>TimerResume<CR>", desc = "Resume" },
-  { "<leader>ttc", function()
-    vim.ui.input({ prompt = 'Minutes: ' }, function(m)
-      if m then vim.cmd('TimerStart ' .. m) end
-    end)
-  end, desc = "Custom" },
+  { "<leader>t",   group = "Timer" },
+  { "<leader>ts",  group = "Session" },
+  { "<leader>ts2", "<cmd>TimerSession default2h<CR>",               desc = "2h focus" },
+  { "<leader>ts1", "<cmd>TimerSession default1h<CR>",               desc = "1h focus" },
+  { "<leader>tsr", "<cmd>TimerSession rest<CR>",                    desc = "Rest" },
+  { "<leader>tt",  group = "Timer" },
+  { "<leader>tts", "<cmd>TimerStop<CR>",                            desc = "Stop" },
+  { "<leader>ttp", "<cmd>TimerPause<CR>",                           desc = "Pause" },
+  { "<leader>ttr", "<cmd>TimerResume<CR>",                          desc = "Resume" },
+  {
+    "<leader>ttc",
+    function()
+      vim.ui.input({ prompt = 'Minutes: ' }, function(m)
+        if m then vim.cmd('TimerStart ' .. m) end
+      end)
+    end,
+    desc = "Custom"
+  },
 
-  { "<leader>p", group = "Pickers" },
+  { "<leader>p",   group = "Pickers" },
   -- Files
-  { "<leader>pf", function() Snacks.picker.files() end, desc = "Files" },
-  { "<leader>pr", function() Snacks.picker.recent() end, desc = "Recent files" },
-  { "<leader>ps", function() Snacks.picker.smart() end, desc = "Smart find" },
-  { "<leader>pb", function() Snacks.picker.buffers() end, desc = "Buffers" },
-  { "<leader>pp", function() Snacks.picker.projects() end, desc = "Projects" },
-  { "<leader>pe", function() Snacks.picker.explorer() end, desc = "Explorer" },
-  { "<leader>pz", function() Snacks.picker.zoxide() end, desc = "Zoxide dirs" },
+  { "<leader>pf",  function() Snacks.picker.files() end,           desc = "Files" },
+  { "<leader>pr",  function() Snacks.picker.recent() end,          desc = "Recent files" },
+  { "<leader>ps",  function() Snacks.picker.smart() end,           desc = "Smart find" },
+  { "<leader>pb",  function() Snacks.picker.buffers() end,         desc = "Buffers" },
+  { "<leader>pp",  function() Snacks.picker.projects() end,        desc = "Projects" },
+  { "<leader>pe",  function() Snacks.picker.explorer() end,        desc = "Explorer" },
+  { "<leader>pz",  function() Snacks.picker.zoxide() end,          desc = "Zoxide dirs" },
   -- Search
-  { "<leader>pg", function() Snacks.picker.grep() end, desc = "Grep" },
-  { "<leader>pG", function() Snacks.picker.grep_buffers() end, desc = "Grep buffers" },
-  { "<leader>pw", function() Snacks.picker.grep_word() end, desc = "Grep word", mode = { "n", "x" } },
-  { "<leader>pl", function() Snacks.picker.lines() end, desc = "Buffer lines" },
+  { "<leader>pg",  function() Snacks.picker.grep() end,            desc = "Grep" },
+  { "<leader>pG",  function() Snacks.picker.grep_buffers() end,    desc = "Grep buffers" },
+  { "<leader>pw",  function() Snacks.picker.grep_word() end,       desc = "Grep word",      mode = { "n", "x" } },
+  { "<leader>pl",  function() Snacks.picker.lines() end,           desc = "Buffer lines" },
   -- Git
-  { "<leader>pv", group = "Git" },
-  { "<leader>pvs", function() Snacks.picker.git_status() end, desc = "Status" },
-  { "<leader>pvb", function() Snacks.picker.git_branches() end, desc = "Branches" },
-  { "<leader>pvl", function() Snacks.picker.git_log() end, desc = "Log" },
-  { "<leader>pvf", function() Snacks.picker.git_log_file() end, desc = "File log" },
-  { "<leader>pvS", function() Snacks.picker.git_stash() end, desc = "Stash" },
-  { "<leader>pvd", function() Snacks.picker.git_diff() end, desc = "Diff" },
+  { "<leader>pv",  group = "Git" },
+  { "<leader>pvs", function() Snacks.picker.git_status() end,      desc = "Status" },
+  { "<leader>pvb", function() Snacks.picker.git_branches() end,    desc = "Branches" },
+  { "<leader>pvl", function() Snacks.picker.git_log() end,         desc = "Log" },
+  { "<leader>pvf", function() Snacks.picker.git_log_file() end,    desc = "File log" },
+  { "<leader>pvS", function() Snacks.picker.git_stash() end,       desc = "Stash" },
+  { "<leader>pvd", function() Snacks.picker.git_diff() end,        desc = "Diff" },
   -- Neovim
-  { "<leader>pn", group = "Neovim" },
-  { "<leader>pnc", function() Snacks.picker.commands() end, desc = "Commands" },
+  { "<leader>pn",  group = "Neovim" },
+  { "<leader>pnc", function() Snacks.picker.commands() end,        desc = "Commands" },
   { "<leader>pnh", function() Snacks.picker.command_history() end, desc = "Command history" },
-  { "<leader>pns", function() Snacks.picker.search_history() end, desc = "Search history" },
-  { "<leader>pnk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
-  { "<leader>pna", function() Snacks.picker.autocmds() end, desc = "Autocmds" },
-  { "<leader>pnH", function() Snacks.picker.highlights() end, desc = "Highlights" },
-  { "<leader>pnC", function() Snacks.picker.colorschemes() end, desc = "Colorschemes" },
-  { "<leader>pno", function() Snacks.picker.options() end, desc = "Options" },
+  { "<leader>pns", function() Snacks.picker.search_history() end,  desc = "Search history" },
+  { "<leader>pnk", function() Snacks.picker.keymaps() end,         desc = "Keymaps" },
+  { "<leader>pna", function() Snacks.picker.autocmds() end,        desc = "Autocmds" },
+  { "<leader>pnH", function() Snacks.picker.highlights() end,      desc = "Highlights" },
+  { "<leader>pnC", function() Snacks.picker.colorschemes() end,    desc = "Colorschemes" },
+  { "<leader>pno", function() Snacks.picker.options() end,         desc = "Options" },
   -- Help
-  { "<leader>ph", group = "Help" },
-  { "<leader>phh", function() Snacks.picker.help() end, desc = "Help tags" },
-  { "<leader>phm", function() Snacks.picker.man() end, desc = "Man pages" },
+  { "<leader>ph",  group = "Help" },
+  { "<leader>phh", function() Snacks.picker.help() end,            desc = "Help tags" },
+  { "<leader>phm", function() Snacks.picker.man() end,             desc = "Man pages" },
   -- Navigation
-  { "<leader>pm", function() Snacks.picker.marks() end, desc = "Marks" },
-  { "<leader>p'", function() Snacks.picker.registers() end, desc = "Registers" },
-  { "<leader>pj", function() Snacks.picker.jumps() end, desc = "Jumps" },
-  { "<leader>pq", function() Snacks.picker.qflist() end, desc = "Quickfix" },
-  { "<leader>pL", function() Snacks.picker.loclist() end, desc = "Location list" },
+  { "<leader>pm",  function() Snacks.picker.marks() end,           desc = "Marks" },
+  { "<leader>p'",  function() Snacks.picker.registers() end,       desc = "Registers" },
+  { "<leader>pj",  function() Snacks.picker.jumps() end,           desc = "Jumps" },
+  { "<leader>pq",  function() Snacks.picker.qflist() end,          desc = "Quickfix" },
+  { "<leader>pL",  function() Snacks.picker.loclist() end,         desc = "Location list" },
   -- Misc
-  { "<leader>pu", function() Snacks.picker.undo() end, desc = "Undo history" },
-  { "<leader>pi", function() Snacks.picker.icons() end, desc = "Icons" },
-  { "<leader>pS", function() Snacks.picker.spelling() end, desc = "Spelling" },
-  { "<leader>pN", function() Snacks.picker.notifications() end, desc = "Notifications" },
-  { "<leader>pT", function() Snacks.picker.todo_comments() end, desc = "TODOs" },
-  { "<leader>pY", function() Snacks.picker.lazy() end, desc = "Lazy plugins" },
-  { "<leader>p.", function() Snacks.picker.resume() end, desc = "Resume last" },
+  { "<leader>pu",  function() Snacks.picker.undo() end,            desc = "Undo history" },
+  { "<leader>pi",  function() Snacks.picker.icons() end,           desc = "Icons" },
+  { "<leader>pS",  function() Snacks.picker.spelling() end,        desc = "Spelling" },
+  { "<leader>pN",  function() Snacks.picker.notifications() end,   desc = "Notifications" },
+  { "<leader>pT",  function() Snacks.picker.todo_comments() end,   desc = "TODOs" },
+  { "<leader>pY",  function() Snacks.picker.lazy() end,            desc = "Lazy plugins" },
+  { "<leader>p.",  function() Snacks.picker.resume() end,          desc = "Resume last" },
 })
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -246,4 +452,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
 --   callback = function(args)
 --     vim.keymap.set('t', '<Space>`', [[<C-\><C-n>]], { buffer = args.buf })
 --   end,
+-- -- })
+-- --
+-- Snacks.win({
+--   file = vim.api.nvim_get_runtime_file("doc/news.txt", false)[1],
+--   width = 0.6,
+--   height = 0.6,
+--   wo = {
+--     spell = false,
+--     wrap = false,
+--     signcolumn = "yes",
+--     statuscolumn = " ",
+--     conceallevel = 3,
+--   },
 -- })
