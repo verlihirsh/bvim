@@ -59,14 +59,14 @@ return {
   require("plugins.blink"),
 
   require("plugins.catppuccin"),
-  {
-    "goolord/alpha-nvim",
-    lazy = false,
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      require("alpha").setup(require("alpha.themes.startify").config)
-    end,
-  },
+  -- {
+  --   "goolord/alpha-nvim",
+  --   lazy = false,
+  --   dependencies = { "nvim-tree/nvim-web-devicons" },
+  --   config = function()
+  --     require("alpha").setup(require("alpha.themes.startify").config)
+  --   end,
+  -- },
   -- {
   --   'hands-free-vim/cursorless.nvim',
   --   dependencies = { 'hands-free-vim/talon.nvim' },
@@ -248,6 +248,7 @@ return {
   },
   {
     "sindrets/diffview.nvim",
+    event = "VeryLazy",
     cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
     opts = {
       enhanced_diff_hl = true,
@@ -377,7 +378,22 @@ return {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     config = function()
-      require("nvim-autopairs").setup({})
+      require("nvim-autopairs").setup({
+        enable_check_bracket_line = true,
+        ignored_next_char = "[%w%.]",
+        check_ts = true,
+        fast_wrap = {
+          map = '<M-e>',
+          chars = { '{', '[', '(', '"', "'" },
+          pattern = [=[[%'%"%>%]%)%}%,]]=],
+          end_key = '$',
+          keys = 'qwertyuiopzxcvbnmasdfghjkl',
+          check_comma = true,
+          highlight = 'Search',
+          highlight_grey = 'Comment'
+        },
+        disable_filetype = { "TelescopePrompt", "vim" },
+      })
     end,
   },
   {

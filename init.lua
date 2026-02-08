@@ -21,5 +21,5 @@ vim.g.maplocalleader = "\\"
 require("lazy").setup("plugins")
 
 require "keymaps"
-require "dashboard"
+require("dashboard").setup()
 require "options"

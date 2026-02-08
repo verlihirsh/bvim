@@ -4,26 +4,26 @@ wk.setup({})
 
 wk.add({
   { "<leader>f",   group = "File" },
-  { "<leader>ff",  function() Snacks.picker.files() end,        desc = "Find File" },
-  { "<leader>fg",  function() Snacks.picker.grep() end,         desc = "Grep Text" },
-  { "<leader>fn",  "<cmd>ene<CR>",                              desc = "New File" },
+  { "<leader>ff",  function() Snacks.picker.files() end,                                                                      desc = "Find File" },
+  { "<leader>fg",  function() Snacks.picker.grep({ opts = { picker = { sources = { explorer = { hidden = true } } } } }) end, desc = "Grep Text" },
+  { "<leader>fn",  "<cmd>ene<CR>",                                                                                            desc = "New File" },
 
   { "<leader>b",   group = "Buffers" },
-  { "<leader>bd",  "<cmd>bdelete<CR>",                          desc = "Delete buffer" },
-  { "<leader>bp",  "<cmd>BufferLineTogglePin<CR>",              desc = "Toggle pin" },
-  { "<leader>bf",  function() Snacks.picker.buffers() end,      desc = "Find buffer" },
-  { "<leader>bb",  "<cmd>BufferLinePick<CR>",                   desc = "Pick buffer" },
-  { "<leader>bD",  "<cmd>silent! %bdelete<CR>",                 desc = "Delete all" },
+  { "<leader>bd",  "<cmd>bdelete<CR>",                                                                                        desc = "Delete buffer" },
+  { "<leader>bp",  "<cmd>BufferLineTogglePin<CR>",                                                                            desc = "Toggle pin" },
+  { "<leader>bf",  function() Snacks.picker.buffers() end,                                                                    desc = "Find buffer" },
+  { "<leader>bb",  "<cmd>BufferLinePick<CR>",                                                                                 desc = "Pick buffer" },
+  { "<leader>bD",  "<cmd>silent! %bdelete<CR>",                                                                               desc = "Delete all" },
   { "<leader>bc",  group = "Close" },
-  { "<leader>bco", "<cmd>BufferLineCloseOthers<CR>",            desc = "Close others" },
-  { "<leader>bcr", "<cmd>BufferLineCloseRight<CR>",             desc = "Close right" },
-  { "<leader>bcl", "<cmd>BufferLineCloseLeft<CR>",              desc = "Close left" },
+  { "<leader>bco", "<cmd>BufferLineCloseOthers<CR>",                                                                          desc = "Close others" },
+  { "<leader>bcr", "<cmd>BufferLineCloseRight<CR>",                                                                           desc = "Close right" },
+  { "<leader>bcl", "<cmd>BufferLineCloseLeft<CR>",                                                                            desc = "Close left" },
 
   { "<leader>g",   group = "Git" },
-  { "<leader>gg",  "<cmd>Git status<CR>",                       desc = "Status" },
-  { "<leader>gf",  function() Snacks.picker.git_log_file() end, desc = "File history" },
+  { "<leader>gg",  "<cmd>Git status<CR>",                                                                                     desc = "Status" },
+  { "<leader>gf",  function() Snacks.picker.git_log_file() end,                                                               desc = "File history" },
   { "<leader>gb",  group = "Branch" },
-  { "<leader>gbb", function() Snacks.picker.git_branches() end, desc = "List branches" },
+  { "<leader>gbb", function() Snacks.picker.git_branches() end,                                                               desc = "List branches" },
   {
     "<leader>gbn",
     function()
@@ -52,7 +52,7 @@ wk.add({
     "<leader>gcama",
     function()
       vim.cmd('Git add .')
-      require("opencode").ask("@diff: make a commin on this changes", { submit = true })
+      require("opencode").ask("@diff: make a commit on this changes", { submit = true })
     end,
     desc = "Add all & commit using llm"
   },
@@ -61,6 +61,7 @@ wk.add({
   { "<leader>gsp", "<cmd>Git stash pop<CR>", desc = "Pop" },
   { "<leader>gp",  group = "Push" },
   { "<leader>gpp", "<cmd>Git push<CR>",      desc = "Push" },
+  { "<leader>gpl", "<cmd>Git pull<CR>",      desc = "Pull" },
   {
     "<leader>gpsup",
     function()
@@ -396,6 +397,27 @@ endfunction
   { "<leader>pY",  function() Snacks.picker.lazy() end,            desc = "Lazy plugins" },
   { "<leader>p.",  function() Snacks.picker.resume() end,          desc = "Resume last" },
 })
+
+
+vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "OptionSet" }, {
+  group = vim.api.nvim_create_augroup("WhichKeyDiffOnly", { clear = true }),
+  pattern = { "*", "diff" }, -- OptionSet needs "diff"
+  callback = function(ev)
+    -- window-local option
+    if vim.wo.diff then
+      wk.add({
+      { "d",  group = "Diff" },
+      { "dgt",         "<cmd>diffget 2<CR>",                      desc = "Get from left" },
+      { "dgo",         "<cmd>diffget 3<CR>",                      desc = "Get from right" },
+      { "dpt",         "<cmd>diffput 2<CR>",                      desc = "Put to main" },
+      })
+    else
+      -- optional: remove the mapping from this buffer when not in diff
+      pcall(wk.unregister, "d", { buffer = ev.buf })
+    end
+  end,
+})
+
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('LspKeymaps', { clear = true }),
