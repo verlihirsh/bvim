@@ -8,11 +8,11 @@ return {
   config = function()
     require("noice").setup({
       lsp = {
-        progress = { enabled = false },  -- Отключаем прогресс LSP
+        progress = { enabled = false },
         hover = {
           enabled = true,
-          silent = true, -- не показывать сообщения
-          view = "hover", -- использовать специальное представление
+          silent = true,
+          view = "hover",
         },
         signature = { enabled = true },
       },
@@ -22,24 +22,24 @@ return {
       },
       messages = {
         enabled = true,
-        view = "notify", -- Используем notify вместо mini
-        view_error = "notify", -- Ошибки тоже через notify
-        view_warn = "notify", -- Предупреждения через notify
+        view = "notify",
+        view_error = "notify",
+        view_warn = "notify",
       },
       notify = {
         enabled = true,
-        view = "notify", -- Используем стандартный notify
+        view = "notify",
       },
       popupmenu = {
-        enabled = true, -- Включаем popup меню
-        backend = "nui", -- Используем nui backend
+        enabled = true,
+        backend = "nui",
       },
       presets = {
         bottom_search = true,
         command_palette = true,
         long_message_to_split = true,
-        inc_rename = false, -- Отключаем всплывающие окна при переименовании
-        lsp_doc_border = true, -- добавить рамку для документации
+        inc_rename = false,
+        lsp_doc_border = true,
       },
       views = {
         cmdline_popup = {

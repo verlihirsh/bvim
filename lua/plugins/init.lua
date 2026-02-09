@@ -16,15 +16,12 @@ return {
         {
           title = "Neo-Tree",
           ft = "neo-tree",
-          -- open = "Neotree position=left filesystem",
         },
       },
       right = {
         {
           title = "OpenCode",
           ft = "opencode_terminal",
-          -- size = { height = 0.7 },
-          -- pinned = true,
           open = function()
             require("opencode").toggle()
           end,
@@ -34,10 +31,6 @@ return {
         {
           ft = "snacks_terminal",
           size = { height = 0.3 },
-          -- pinned = true,
-          -- open = function()
-          --   Snacks.terminal()
-          -- end,
           title = "snacks_terminal",
         },
       },
@@ -59,104 +52,6 @@ return {
   require("plugins.blink"),
 
   require("plugins.catppuccin"),
-  -- {
-  --   "goolord/alpha-nvim",
-  --   lazy = false,
-  --   dependencies = { "nvim-tree/nvim-web-devicons" },
-  --   config = function()
-  --     require("alpha").setup(require("alpha.themes.startify").config)
-  --   end,
-  -- },
-  -- {
-  --   'hands-free-vim/cursorless.nvim',
-  --   dependencies = { 'hands-free-vim/talon.nvim' },
-  --   config = function()
-  --     require("talon").setup()
-  --     require("cursorless").setup({
-  --       shortcut = "<C-S-f12>",
-  --     })
-  --     vim.keymap.set("n", "<leader>vt", function()
-  --       vim.fn.system("open -g 'talon://toggle'")
-  --     end, { desc = "Toggle Talon listening" })
-  --
-  --     local cheatsheet_buf = nil
-  --     local cheatsheet_win = nil
-  --     local cheatsheet_content = {
-  --       "╔══════════════════════════════╗",
-  --       "║     TALON VOICE CHEATSHEET   ║",
-  --       "╠══════════════════════════════╣",
-  --       "║ NATO ALPHABET                ║",
-  --       "╠══════════════════════════════╣",
-  --       "║ alpha    A │ november  N    ║",
-  --       "║ bravo    B │ oscar     O    ║",
-  --       "║ charlie  C │ papa      P    ║",
-  --       "║ delta    D │ quebec    Q    ║",
-  --       "║ echo     E │ romeo     R    ║",
-  --       "║ foxtrot  F │ sierra    S    ║",
-  --       "║ golf     G │ tango     T    ║",
-  --       "║ hotel    H │ uniform   U    ║",
-  --       "║ india    I │ victor    V    ║",
-  --       "║ juliet   J │ whiskey   W    ║",
-  --       "║ kilo     K │ xray      X    ║",
-  --       "║ lima     L │ yankee    Y    ║",
-  --       "║ mike     M │ zulu      Z    ║",
-  --       "╠══════════════════════════════╣",
-  --       "║ NUMBERS                      ║",
-  --       "╠══════════════════════════════╣",
-  --       "║ zero one two three four      ║",
-  --       "║ five six seven eight nine    ║",
-  --       "╠══════════════════════════════╣",
-  --       "║ MODIFIERS                    ║",
-  --       "╠══════════════════════════════╣",
-  --       "║ control option shift command ║",
-  --       "╠══════════════════════════════╣",
-  --       "║ SPECIAL KEYS                 ║",
-  --       "╠══════════════════════════════╣",
-  --       "║ escape  enter  tab  space    ║",
-  --       "║ backspace  delete            ║",
-  --       "║ up  down  left  right        ║",
-  --       "║ home  end  page up/down      ║",
-  --       "╠══════════════════════════════╣",
-  --       "║ DICTATION                    ║",
-  --       "╠══════════════════════════════╣",
-  --       "║ say <text>     → type text   ║",
-  --       "║ sentence <t>   → Title case  ║",
-  --       "║ snake <text>   → snake_case  ║",
-  --       "║ camel <text>   → camelCase   ║",
-  --       "╠══════════════════════════════╣",
-  --       "║ VIM EXAMPLES                 ║",
-  --       "╠══════════════════════════════╣",
-  --       "║ five juliet    → 5j          ║",
-  --       "║ delete whiskey → dw          ║",
-  --       "║ control romeo  → Ctrl+R      ║",
-  --       "╚══════════════════════════════╝",
-  --     }
-  --
-  --     vim.keymap.set("n", "<leader>vc", function()
-  --       if cheatsheet_win and vim.api.nvim_win_is_valid(cheatsheet_win) then
-  --         vim.api.nvim_win_close(cheatsheet_win, true)
-  --         cheatsheet_win = nil
-  --         return
-  --       end
-  --
-  --       cheatsheet_buf = vim.api.nvim_create_buf(false, true)
-  --       vim.api.nvim_buf_set_lines(cheatsheet_buf, 0, -1, false, cheatsheet_content)
-  --       vim.api.nvim_buf_set_option(cheatsheet_buf, "modifiable", false)
-  --       vim.api.nvim_buf_set_option(cheatsheet_buf, "buftype", "nofile")
-  --       vim.api.nvim_buf_set_option(cheatsheet_buf, "filetype", "talon_cheatsheet")
-  --
-  --       vim.cmd("topleft 34vsplit")
-  --       cheatsheet_win = vim.api.nvim_get_current_win()
-  --       vim.api.nvim_win_set_buf(cheatsheet_win, cheatsheet_buf)
-  --       vim.api.nvim_win_set_option(cheatsheet_win, "number", false)
-  --       vim.api.nvim_win_set_option(cheatsheet_win, "relativenumber", false)
-  --       vim.api.nvim_win_set_option(cheatsheet_win, "winfixwidth", true)
-  --
-  --       vim.api.nvim_buf_set_keymap(cheatsheet_buf, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-  --       vim.cmd("wincmd p")
-  --     end, { desc = "Toggle Talon cheatsheet" })
-  --   end,
-  -- },
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -414,10 +309,32 @@ return {
   },
   {
     "folke/which-key.nvim",
-    lazy = false,
+    event = "VeryLazy",
+    opts = {
+      picker = {
+        sources = {
+          explorer = {
+            layout = { layout = { position = "float" } },
+          }
+        }
+      },
+      plugins = {},
+      win = {
+        no_overlap = false,
+        width = { min = 40, max = 0.7 },
+        height = { min = 10, max = 0.75 },
+        padding = { 0, 1 },
+        col = -0.5,
+        row = 2,
+        border = "rounded",
+        title = true,
+        title_pos = "left",
+      },
+      layout = {
+        width = { min = 30 },
+      },
+    },
   },
-
-
   {
     "rcarriga/nvim-notify",
     lazy = false,
@@ -537,7 +454,7 @@ return {
                 wrap = true,
                 linebreak = true,
               },
-              -- style = 'input',
+
             },
             expand = true,
           },
@@ -561,7 +478,6 @@ return {
       }
 
       vim.o.autoread = true
-      -- require("opencode").setup(vim.g.opencode_opts)
     end,
   },
   {
@@ -572,13 +488,6 @@ return {
         edit = {
           watch = false,
           force = false,
-          -- ignore_patterns = {
-          --   "run_onchange_.*",
-          --   "run_once_.*",
-          --   "%.chezmoiignore",
-          --   "%.chezmoitemplate",
-          --   -- Add custom patterns here
-          -- },
         },
         events = {
           on_open = {
