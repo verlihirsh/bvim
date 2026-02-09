@@ -393,14 +393,14 @@ vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "OptionSet" }, {
     -- window-local option
     if vim.wo.diff then
       wk.add({
-        { "d",   group = "Diff" },
-        { "dgt", "<cmd>diffget 2<CR>", desc = "Get from left" },
-        { "dgo", "<cmd>diffget 3<CR>", desc = "Get from right" },
-        { "dpt", "<cmd>diffput 2<CR>", desc = "Put to main" },
+        { "<leader>d",    group = "Diff" },
+        { "<leader>dgt",  "<cmd>diffget 2<CR>", desc = "Get from left" },
+        { "<leader>dgo",  "<cmd>diffget 3<CR>", desc = "Get from right" },
+        { "<leader>dpt",  "<cmd>diffput 2<CR>", desc = "Put to main" },
       })
     else
       -- optional: remove the mapping from this buffer when not in diff
-      pcall(wk.unregister, "d", { buffer = ev.buf })
+      pcall(wk.unregister, "<leader>d", { buffer = ev.buf })
     end
   end,
 })
