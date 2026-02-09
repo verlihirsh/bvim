@@ -14,7 +14,7 @@
 
 ---
 
-Curated and approved by [Bashik](bashik.md)
+Curated and approved by [Bashik](https://github.com/verlihirsh/verlihirsh/blob/main/bashik.md)
 
 <img width="254" height="254" alt="blobashik" src="https://github.com/user-attachments/assets/943dba57-848b-4f55-957f-16f3bab50fb6" />
 
