@@ -57,7 +57,7 @@ wk.add({
     "<leader>gcama",
     function()
       vim.cmd('Git add .')
-      require("opencode").ask("@diff: make a commit on this changes", { submit = true })
+      require("opencode").ask("@diff: make a commit for these changes", { submit = true })
     end,
     desc = "Add all & commit using llm"
   },
