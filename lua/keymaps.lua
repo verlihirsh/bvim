@@ -3,27 +3,32 @@ local wk = require("which-key")
 wk.setup({})
 
 wk.add({
-  { "<leader>f",   group = "File" },
-  { "<leader>ff",  function() Snacks.picker.files() end,        desc = "Find File" },
-  { "<leader>fg",  function() Snacks.picker.grep() end,         desc = "Grep Text" },
-  { "<leader>fn",  "<cmd>ene<CR>",                              desc = "New File" },
+  { "<leader>f",   group = "Find" },
+  { "<leader>fe",  function() Snacks.picker.explorer({ layout = { preset = "default", preview = true }, auto_close = true }) end, desc = "Explorer" },
+  { "<leader>ff",  function() Snacks.picker.files({ hidden = true, ignored = true }) end,                                       desc = "Find File" },
+  { "<leader>fg",  function() Snacks.picker.grep({ hidden = true, ignored = true }) end,                                        desc = "Grep Text" },
+  { "<leader>fr",  function() Snacks.picker.recent() end,                                                                       desc = "Recent files" },
+  { "<leader>fb",  function() Snacks.picker.buffers() end,                                                                      desc = "Buffers" },
+  { "<leader>fp",  function() Snacks.picker.projects() end,                                                                     desc = "Projects" },
+  { "<leader>fG",  function() Snacks.picker.grep_buffers() end,                                                                 desc = "Grep buffers" },
+  { "<leader>fn",  "<cmd>ene<CR>",                                                                                              desc = "New File" },
 
   { "<leader>b",   group = "Buffers" },
-  { "<leader>bd",  "<cmd>bdelete<CR>",                          desc = "Delete buffer" },
-  { "<leader>bp",  "<cmd>BufferLineTogglePin<CR>",              desc = "Toggle pin" },
-  { "<leader>bf",  function() Snacks.picker.buffers() end,      desc = "Find buffer" },
-  { "<leader>bb",  "<cmd>BufferLinePick<CR>",                   desc = "Pick buffer" },
-  { "<leader>bD",  "<cmd>silent! %bdelete<CR>",                 desc = "Delete all" },
+  { "<leader>bd",  "<cmd>bdelete<CR>",                                                                                          desc = "Delete buffer" },
+  { "<leader>bp",  "<cmd>BufferLineTogglePin<CR>",                                                                              desc = "Toggle pin" },
+  { "<leader>bf",  function() Snacks.picker.buffers() end,                                                                      desc = "Find buffer" },
+  { "<leader>bb",  "<cmd>BufferLinePick<CR>",                                                                                   desc = "Pick buffer" },
+  { "<leader>bD",  "<cmd>silent! %bdelete<CR>",                                                                                 desc = "Delete all" },
   { "<leader>bc",  group = "Close" },
-  { "<leader>bco", "<cmd>BufferLineCloseOthers<CR>",            desc = "Close others" },
-  { "<leader>bcr", "<cmd>BufferLineCloseRight<CR>",             desc = "Close right" },
-  { "<leader>bcl", "<cmd>BufferLineCloseLeft<CR>",              desc = "Close left" },
+  { "<leader>bco", "<cmd>BufferLineCloseOthers<CR>",                                                                            desc = "Close others" },
+  { "<leader>bcr", "<cmd>BufferLineCloseRight<CR>",                                                                             desc = "Close right" },
+  { "<leader>bcl", "<cmd>BufferLineCloseLeft<CR>",                                                                              desc = "Close left" },
 
   { "<leader>g",   group = "Git" },
-  { "<leader>gg",  "<cmd>Git status<CR>",                       desc = "Status" },
-  { "<leader>gf",  function() Snacks.picker.git_log_file() end, desc = "File history" },
+  { "<leader>gg",  "<cmd>Git status<CR>",                                                                                       desc = "Status" },
+  { "<leader>gf",  function() Snacks.picker.git_log_file() end,                                                                 desc = "File history" },
   { "<leader>gb",  group = "Branch" },
-  { "<leader>gbb", function() Snacks.picker.git_branches() end, desc = "List branches" },
+  { "<leader>gbb", function() Snacks.picker.git_branches() end,                                                                 desc = "List branches" },
   {
     "<leader>gbn",
     function()
@@ -52,7 +57,7 @@ wk.add({
     "<leader>gcama",
     function()
       vim.cmd('Git add .')
-      require("opencode").ask("@diff: make a commin on this changes", { submit = true })
+      require("opencode").ask("@diff: make a commit for these changes", { submit = true })
     end,
     desc = "Add all & commit using llm"
   },
@@ -61,6 +66,7 @@ wk.add({
   { "<leader>gsp", "<cmd>Git stash pop<CR>", desc = "Pop" },
   { "<leader>gp",  group = "Push" },
   { "<leader>gpp", "<cmd>Git push<CR>",      desc = "Push" },
+  { "<leader>gpl", "<cmd>Git pull<CR>",      desc = "Pull" },
   {
     "<leader>gpsup",
     function()
@@ -297,28 +303,11 @@ endfunction
   },
 
   { "<leader>e",   group = "Explorer" },
-  {
-    "<leader>ee",
-    function()
-      local current_ft = vim.bo.filetype
-      if current_ft == "neo-tree" then
-        -- vim.cmd("Neotree close")
-        require("edgy").goto_main()
-      else
-        -- vim.cmd("Neotree focus last left")
-        require("edgy").select("left")
-      end
-    end,
-    desc = "Toggle Explorer",
-  },
-  { "<leader>ee",  "<cmd>Neotree toggle last left<CR>",             desc = "Toggle Explorer" },
+  { "<leader>ee",  "<cmd>Neotree reveal last left<CR>",             desc = "Toggle Explorer" },
   { "<leader>ef",  "<cmd>Neotree focus filesystem left reveal<CR>", desc = "Focus Files" },
   { "<leader>eb",  "<cmd>Neotree focus buffers left<CR>",           desc = "Focus Buffers" },
   { "<leader>eg",  "<cmd>Neotree focus git_status left<CR>",        desc = "Focus Git" },
   { "<leader>es",  "<cmd>Neotree focus document_symbols left<CR>",  desc = "Focus Symbols" },
-  { "<leader>em",  "<cmd>Neotree focus marks <CR>",                 desc = "Focus marks" },
-  { "<leader>el",  function() require("edgy").toggle("left") end,   desc = "toggle left" },
-  { "<leader>er",  function() require("edgy").toggle("right") end,  desc = "toggle right" },
   { "<leader>en",  "<C-w>w",                                        desc = "Cycle windows" },
   { "<leader>et",  function() Snacks.terminal() end,                desc = "Toggle Terminal" },
 
@@ -347,55 +336,75 @@ endfunction
 
   { "<leader>p",   group = "Pickers" },
   -- Files
-  { "<leader>pf",  function() Snacks.picker.files() end,           desc = "Files" },
-  { "<leader>pr",  function() Snacks.picker.recent() end,          desc = "Recent files" },
-  { "<leader>ps",  function() Snacks.picker.smart() end,           desc = "Smart find" },
-  { "<leader>pb",  function() Snacks.picker.buffers() end,         desc = "Buffers" },
-  { "<leader>pp",  function() Snacks.picker.projects() end,        desc = "Projects" },
-  { "<leader>pe",  function() Snacks.picker.explorer() end,        desc = "Explorer" },
-  { "<leader>pz",  function() Snacks.picker.zoxide() end,          desc = "Zoxide dirs" },
+  { "<leader>pf",  function() Snacks.picker.files() end,                                                     desc = "Files" },
+  { "<leader>pr",  function() Snacks.picker.recent() end,                                                    desc = "Recent files" },
+  { "<leader>ps",  function() Snacks.picker.smart() end,                                                     desc = "Smart find" },
+  { "<leader>pb",  function() Snacks.picker.buffers() end,                                                   desc = "Buffers" },
+  { "<leader>pp",  function() Snacks.picker.projects() end,                                                  desc = "Projects" },
+  { "<leader>pe",  function() Snacks.picker.explorer({ layout = { layout = { preset = "explorer" } } }) end, desc = "Explorer" },
+  { "<leader>pz",  function() Snacks.picker.zoxide() end,                                                    desc = "Zoxide dirs" },
   -- Search
-  { "<leader>pg",  function() Snacks.picker.grep() end,            desc = "Grep" },
-  { "<leader>pG",  function() Snacks.picker.grep_buffers() end,    desc = "Grep buffers" },
-  { "<leader>pw",  function() Snacks.picker.grep_word() end,       desc = "Grep word",      mode = { "n", "x" } },
-  { "<leader>pl",  function() Snacks.picker.lines() end,           desc = "Buffer lines" },
+  { "<leader>pg",  function() Snacks.picker.grep() end,                                                      desc = "Grep" },
+  { "<leader>pG",  function() Snacks.picker.grep_buffers() end,                                              desc = "Grep buffers" },
+  { "<leader>pw",  function() Snacks.picker.grep_word() end,                                                 desc = "Grep word",      mode = { "n", "x" } },
+  { "<leader>pl",  function() Snacks.picker.lines() end,                                                     desc = "Buffer lines" },
   -- Git
   { "<leader>pv",  group = "Git" },
-  { "<leader>pvs", function() Snacks.picker.git_status() end,      desc = "Status" },
-  { "<leader>pvb", function() Snacks.picker.git_branches() end,    desc = "Branches" },
-  { "<leader>pvl", function() Snacks.picker.git_log() end,         desc = "Log" },
-  { "<leader>pvf", function() Snacks.picker.git_log_file() end,    desc = "File log" },
-  { "<leader>pvS", function() Snacks.picker.git_stash() end,       desc = "Stash" },
-  { "<leader>pvd", function() Snacks.picker.git_diff() end,        desc = "Diff" },
+  { "<leader>pvs", function() Snacks.picker.git_status() end,                                                desc = "Status" },
+  { "<leader>pvb", function() Snacks.picker.git_branches() end,                                              desc = "Branches" },
+  { "<leader>pvl", function() Snacks.picker.git_log() end,                                                   desc = "Log" },
+  { "<leader>pvf", function() Snacks.picker.git_log_file() end,                                              desc = "File log" },
+  { "<leader>pvS", function() Snacks.picker.git_stash() end,                                                 desc = "Stash" },
+  { "<leader>pvd", function() Snacks.picker.git_diff() end,                                                  desc = "Diff" },
   -- Neovim
   { "<leader>pn",  group = "Neovim" },
-  { "<leader>pnc", function() Snacks.picker.commands() end,        desc = "Commands" },
-  { "<leader>pnh", function() Snacks.picker.command_history() end, desc = "Command history" },
-  { "<leader>pns", function() Snacks.picker.search_history() end,  desc = "Search history" },
-  { "<leader>pnk", function() Snacks.picker.keymaps() end,         desc = "Keymaps" },
-  { "<leader>pna", function() Snacks.picker.autocmds() end,        desc = "Autocmds" },
-  { "<leader>pnH", function() Snacks.picker.highlights() end,      desc = "Highlights" },
-  { "<leader>pnC", function() Snacks.picker.colorschemes() end,    desc = "Colorschemes" },
-  { "<leader>pno", function() Snacks.picker.options() end,         desc = "Options" },
+  { "<leader>pnc", function() Snacks.picker.commands() end,                                                  desc = "Commands" },
+  { "<leader>pnh", function() Snacks.picker.command_history() end,                                           desc = "Command history" },
+  { "<leader>pns", function() Snacks.picker.search_history() end,                                            desc = "Search history" },
+  { "<leader>pnk", function() Snacks.picker.keymaps() end,                                                   desc = "Keymaps" },
+  { "<leader>pna", function() Snacks.picker.autocmds() end,                                                  desc = "Autocmds" },
+  { "<leader>pnH", function() Snacks.picker.highlights() end,                                                desc = "Highlights" },
+  { "<leader>pnC", function() Snacks.picker.colorschemes() end,                                              desc = "Colorschemes" },
+  { "<leader>pno", function() Snacks.picker.options() end,                                                   desc = "Options" },
   -- Help
   { "<leader>ph",  group = "Help" },
-  { "<leader>phh", function() Snacks.picker.help() end,            desc = "Help tags" },
-  { "<leader>phm", function() Snacks.picker.man() end,             desc = "Man pages" },
+  { "<leader>phh", function() Snacks.picker.help() end,                                                      desc = "Help tags" },
+  { "<leader>phm", function() Snacks.picker.man() end,                                                       desc = "Man pages" },
   -- Navigation
-  { "<leader>pm",  function() Snacks.picker.marks() end,           desc = "Marks" },
-  { "<leader>p'",  function() Snacks.picker.registers() end,       desc = "Registers" },
-  { "<leader>pj",  function() Snacks.picker.jumps() end,           desc = "Jumps" },
-  { "<leader>pq",  function() Snacks.picker.qflist() end,          desc = "Quickfix" },
-  { "<leader>pL",  function() Snacks.picker.loclist() end,         desc = "Location list" },
+  { "<leader>pm",  function() Snacks.picker.marks() end,                                                     desc = "Marks" },
+  { "<leader>p'",  function() Snacks.picker.registers() end,                                                 desc = "Registers" },
+  { "<leader>pj",  function() Snacks.picker.jumps() end,                                                     desc = "Jumps" },
+  { "<leader>pq",  function() Snacks.picker.qflist() end,                                                    desc = "Quickfix" },
+  { "<leader>pL",  function() Snacks.picker.loclist() end,                                                   desc = "Location list" },
   -- Misc
-  { "<leader>pu",  function() Snacks.picker.undo() end,            desc = "Undo history" },
-  { "<leader>pi",  function() Snacks.picker.icons() end,           desc = "Icons" },
-  { "<leader>pS",  function() Snacks.picker.spelling() end,        desc = "Spelling" },
-  { "<leader>pN",  function() Snacks.picker.notifications() end,   desc = "Notifications" },
-  { "<leader>pT",  function() Snacks.picker.todo_comments() end,   desc = "TODOs" },
-  { "<leader>pY",  function() Snacks.picker.lazy() end,            desc = "Lazy plugins" },
-  { "<leader>p.",  function() Snacks.picker.resume() end,          desc = "Resume last" },
+  { "<leader>pu",  function() Snacks.picker.undo() end,                                                      desc = "Undo history" },
+  { "<leader>pi",  function() Snacks.picker.icons() end,                                                     desc = "Icons" },
+  { "<leader>pS",  function() Snacks.picker.spelling() end,                                                  desc = "Spelling" },
+  { "<leader>pN",  function() Snacks.picker.notifications() end,                                             desc = "Notifications" },
+  { "<leader>pY",  function() Snacks.picker.lazy() end,                                                      desc = "Lazy plugins" },
+  { "<leader>p.",  function() Snacks.picker.resume() end,                                                    desc = "Resume last" },
 })
+
+
+vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "OptionSet" }, {
+  group = vim.api.nvim_create_augroup("WhichKeyDiffOnly", { clear = true }),
+  pattern = { "*", "diff" }, -- OptionSet needs "diff"
+  callback = function(ev)
+    -- window-local option
+    if vim.wo.diff then
+      wk.add({
+        { "<leader>d",    group = "Diff" },
+        { "<leader>dgt",  "<cmd>diffget 2<CR>", desc = "Get from left" },
+        { "<leader>dgo",  "<cmd>diffget 3<CR>", desc = "Get from right" },
+        { "<leader>dpt",  "<cmd>diffput 2<CR>", desc = "Put to main" },
+      })
+    else
+      -- optional: remove the mapping from this buffer when not in diff
+      pcall(wk.unregister, "<leader>d", { buffer = ev.buf })
+    end
+  end,
+})
+
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('LspKeymaps', { clear = true }),
@@ -448,21 +457,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- vim.api.nvim_create_autocmd('TermOpen', {
---   callback = function(args)
---     vim.keymap.set('t', '<Space>`', [[<C-\><C-n>]], { buffer = args.buf })
---   end,
--- -- })
--- --
--- Snacks.win({
---   file = vim.api.nvim_get_runtime_file("doc/news.txt", false)[1],
---   width = 0.6,
---   height = 0.6,
---   wo = {
---     spell = false,
---     wrap = false,
---     signcolumn = "yes",
---     statuscolumn = " ",
---     conceallevel = 3,
---   },
--- })
+-- Clipboard keymaps (explicit system clipboard access)
+vim.keymap.set('n', 'ytc', '"+y', { desc = "Yank to clipboard" })
+vim.keymap.set('v', 'ytc', '"+y', { desc = "Yank to clipboard" })
+vim.keymap.set('n', 'pfc', '"+p', { desc = "Paste from clipboard" })
+vim.keymap.set('v', 'pfc', '"+p', { desc = "Paste from clipboard" })

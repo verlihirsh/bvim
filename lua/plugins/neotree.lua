@@ -29,30 +29,17 @@ return {
             Snacks.rename.on_rename_file(args.source, args.destination)
           end
         },
-        -- {
-        --   event = "file_open_requested",
-        --   handler = function(args)
-        --     local state = args.state
-        --     if state.preview_win and state.preview_win:valid() then
-        --       state.preview_win:close()
-        --       state.preview_win = nil
-        --     end
-        --     if state.preview_autocmd then
-        --       vim.api.nvim_del_autocmd(state.preview_autocmd)
-        --       state.preview_autocmd = nil
-        --     end
-        --   end
-        -- },
+
       },
       source_selector = {
         winbar = true,
         content_layout = "center",
         sources = {
-          { source = "filesystem", display_name = " F" },
-          { source = "buffers", display_name = " B" },
-          { source = "git_status", display_name = " G" },
-          { source = "document_symbols", display_name = " S" },
-          { source = "marks", display_name = " M" },
+          { source = "filesystem", display_name = " F" },
+          { source = "buffers", display_name = " B" },
+          { source = "git_status", display_name = " D" },
+          { source = "document_symbols", display_name = " S" },
+          { source = "marks", display_name = " M" },
         },
       },
       popup_border_style = "rounded",
@@ -63,16 +50,9 @@ return {
       },
       window = {
         mappings = {
-          -- ["<C-r>"] = "refresh",
-          -- ["q"] = function()
-          --   require("edgy").close("left")
-          -- end,
-          -- ["<C-q>"] = function()
-          --   require("edgy").close("left")
-          -- end,
           ["F"] = function() vim.cmd("Neotree focus filesystem left") end,
           ["B"] = function() vim.cmd("Neotree focus buffers left") end,
-          ["G"] = function() vim.cmd("Neotree focus git_status left") end,
+          ["D"] = function() vim.cmd("Neotree focus git_status left") end,
           ["S"] = function() vim.cmd("Neotree focus document_symbols left") end,
           ["M"] = function() vim.cmd("Neotree focus marks left") end,
         },
